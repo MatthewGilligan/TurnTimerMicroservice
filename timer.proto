@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package timer;
+
+service TurnTimer {
+  rpc StartTurn   (StartTurnRequest)   returns (StartTurnResponse);
+  rpc CheckTime   (CheckTimeRequest)   returns (CheckTimeResponse);
+  rpc EndTurn     (EndTurnRequest)     returns (EndTurnResponse);
+  rpc ConfigTimer (ConfigTimerRequest) returns (ConfigTimerResponse);
+}
+
+message ConfigTimerRequest {
+  string game_id            = 1;
+  int32  seconds_per_player = 2;  // total bank of seconds per player
+}
+
+message ConfigTimerResponse {
+  bool   success       = 1;
+  string error_message = 2;
+}
+
+message StartTurnRequest {
+  string game_id      = 1;
+  string active_color = 2;  // "WHITE" or "BLACK"
+}
+
+message StartTurnResponse {
+  bool   success            = 1;
+  int32  seconds_remaining  = 2;
+  string error_message      = 3;
+}
+
+message CheckTimeRequest {
+  string game_id      = 1;
+  string active_color = 2;
+}
+
+message CheckTimeResponse {
+  int32  seconds_remaining = 1;
+  bool   time_expired      = 2;
+  string active_color      = 3;
+}
+
+message EndTurnRequest {
+  string game_id      = 1;
+  string active_color = 2;
+}
+
+message EndTurnResponse {
+  bool   success              = 1;
+  int32  seconds_used         = 2;
+  int32  seconds_remaining    = 3;
+}
